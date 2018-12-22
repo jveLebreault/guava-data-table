@@ -3,7 +3,7 @@
         <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a href="https://www.britecore.com/" class="navbar-item">
-                    <img alt="Britecore logo" src="./assets/britecore-logo.png" width="112" height="28">
+                    <img alt="Britecore logo" src="./assets/images/britecore-logo.png" width="112" height="28">
                 </a>
         
                 <a role="button" class="navbar-burger" @click="toggleActive" :class="{'is-active': isActive}" aria-label="menu" aria-expanded="false">
@@ -53,4 +53,5 @@ export default {
 
 <style>
 @import "~bulma/css/bulma.min.css";
+@import "~typicons.font/src/font/typicons.css";
 </style>

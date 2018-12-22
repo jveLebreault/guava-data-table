@@ -1,7 +1,7 @@
 <template>
     <div>
         <h3 class="title">Payment history</h3>
-        <guava-data-table :columns="fields" :data="payments"></guava-data-table>
+        <guava-data-table :columns="fields" :rows="payments"></guava-data-table>
     </div>
 </template>
 
@@ -20,7 +20,8 @@ const paymentHistoryColumns = [
     },
     {
         header: 'Description',
-        field: 'description'
+        field: 'description',
+        isEditable: true
     },
     {
         header: 'Date',
@@ -28,7 +29,8 @@ const paymentHistoryColumns = [
     },
     {
         header: 'Amount',
-        field: 'amount'
+        field: 'amount',
+        isSortable: true
     }
 ];
 
