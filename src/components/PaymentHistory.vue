@@ -25,7 +25,8 @@ const paymentHistoryColumns = [
     },
     {
         header: 'Date',
-        field: 'date'
+        field: 'date',
+        isSortable: true
     },
     {
         header: 'Amount',

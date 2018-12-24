@@ -22,9 +22,8 @@ export default {
 
     computed: {
         getSortedIconClass() {
-            console.log(this.column);
             return {
-                'typcn-arrow-unsorted': !this.column.sortOrder,
+                'typcn-arrow-unsorted':  !this.column.sortOrder || this.column.sortOrder == '',
                 'typcn-arrow-sorted-down': this.column.sortOrder == 'desc',
                 'typcn-arrow-sorted-up': this.column.sortOrder == 'asc',
             }
