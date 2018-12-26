@@ -1,1 +1,2 @@
 export const FETCH_PAYMENTS = 'FETCH_PAYMENTS';
+export const UPDATE_PAYMENT = 'UPDATE_PAYMENT';

@@ -8,26 +8,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in rows" :key="item.id">
+            <tr v-for="(item, key) in rows" :key="key">
                 <template v-for="column in columns">
-                    <data-cell :item="item" :column="column" :key="column.field"/>
+                    <data-cell :item="item" :column="column" :key="column.field" @save-edit="saveEdit(item, key, $event)"/>
                 </template>
-                <!-- <td v-for="column in columns" :key="column.field">
-                    <div class="columns">
-                        <p class="column">
-                            {{item[column.field]}}
-                        </p>
-                        <p class="column is-one-third" v-if="column.isEditable">
-                            EDIT BUTTON
-                        </p>
-                         <button class="button column is-one-third"  @click="edit(item, column.field)">
-                            <span>Edit</span>
-                            <span class="icon">
-                                <i class="typcn typcn-edit"></i>
-                            </span>
-                        </button>
-                    </div>
-                </td> -->
             </tr>
         </tbody>
     </table>
@@ -52,8 +36,7 @@ export default {
         },
 
         rows: {
-            required: true,
-            type: Array
+            required: true
         }
     },
 
@@ -74,7 +57,7 @@ export default {
             }
 
             const {field, sortOrder} = column;
-
+            //TODO: Fix sorting in case there is an object instead an array
             this.rows.sort((itemA, itemB) => {
                 if (itemA[field] < itemB[field]) {
                     return sortOrder == 'desc' ? -1 : 1;
@@ -89,13 +72,16 @@ export default {
 
         },
 
-        edit(item, field) {
-            console.log(item, field);
+        saveEdit(item, key, event) {            
+            Object.assign(item, event);
+            this.$emit('edited-item', {
+                item,
+                key
+            });
         }
     },
 
     data() {
-        // console.log('COLUMNS', this.columns, 'ROWS' ,this.rows);
         return {
             currentlySortedColumn: {}
         }

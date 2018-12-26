@@ -1,13 +1,13 @@
 <template>
     <div>
         <h3 class="title">Payment history</h3>
-        <guava-data-table :columns="fields" :rows="payments"></guava-data-table>
+        <guava-data-table :columns="fields" :rows="payments" @edited-item="editedItem"></guava-data-table>
     </div>
 </template>
 
 <script>
 import GuavaDataTable from "./data-table/guava-data-table.vue";
-import { FETCH_PAYMENTS } from "../store/actions/action-types";
+import { FETCH_PAYMENTS, UPDATE_PAYMENT } from "../store/actions/action-types";
 
 const paymentHistoryColumns = [
     {
@@ -16,7 +16,8 @@ const paymentHistoryColumns = [
     },
     {
         header: 'Name',
-        field: 'name'
+        field: 'name',
+        isSortable: true
     },
     {
         header: 'Description',
@@ -48,6 +49,14 @@ export default {
     computed: {
         payments() {
             return this.$store.state.payments;
+        }
+    },
+
+    methods: {
+        editedItem(payload){
+            this.$store.dispatch(UPDATE_PAYMENT, {
+                payload
+            });
         }
     },
 
