@@ -8,11 +8,20 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(item, key) in rows" :key="key">
-                <template v-for="column in columns">
-                    <data-cell :item="item" :column="column" :key="column.field" @save-edit="saveEdit(item, key, $event)"/>
-                </template>
-            </tr>
+            <template v-if="Array.isArray(rows)">
+                <tr v-for="(item, key) in rows" :key="key">
+                    <template v-for="column in columns">
+                        <data-cell :item="item" :column="column" :key="column.field" @save-edit="saveEdit($event, item, key)"/>
+                    </template>
+                </tr>
+            </template>
+            <template v-else>
+                <tr v-for="key in sortedKeys" :key="key">
+                    <template v-for="column in columns">
+                        <data-cell :item="rows[key]" :column="column" :key="column.field" @save-edit="saveEdit($event, rows[key], key)"/>
+                    </template>
+                </tr>
+            </template>
         </tbody>
     </table>
 </template>
@@ -40,6 +49,20 @@ export default {
         }
     },
 
+    // mounted() {
+    //     // this.isRowArray = Array.isArray(this.rows);
+    //     this.sortedKeys = Object.keys(this.rows);
+    // },
+
+    computed: {
+        // isRowArray() {
+        //     return Array.isArray(this.rows);
+        // }
+        sortedKeys() {
+            return Object.keys(this.rows);
+        }
+    },
+
     methods: {
         sort(column) {
 
@@ -57,7 +80,15 @@ export default {
             }
 
             const {field, sortOrder} = column;
-            //TODO: Fix sorting in case there is an object instead an array
+
+            if(Array.isArray(this.rows)) {
+                this.sortArray(field, sortOrder);
+            } else {
+                this.sortObjectKeys(field, sortOrder);
+            }
+        },
+
+        sortArray(field, sortOrder) {
             this.rows.sort((itemA, itemB) => {
                 if (itemA[field] < itemB[field]) {
                     return sortOrder == 'desc' ? -1 : 1;
@@ -69,21 +100,36 @@ export default {
 
                 return 0;
             });
+        },
+
+        sortObjectKeys(field, sortOrder) {
+            this.sortedKeys.sort((itemA, itemB) => {
+                if (this.rows[itemA][field] < this.rows[itemB][field]) {
+                    return sortOrder == 'desc' ? -1 : 1;
+                }
+
+                if (this.rows[itemA][field] > this.rows[itemB][field]) {
+                    return sortOrder == 'desc' ? 1 : -1;
+                }
+
+                return 0;
+            });
 
         },
 
-        saveEdit(item, key, event) {            
+        saveEdit(event, item, key) {
             Object.assign(item, event);
             this.$emit('edited-item', {
                 item,
                 key
             });
-        }
+        },
     },
 
     data() {
         return {
-            currentlySortedColumn: {}
+            currentlySortedColumn: {},
+            // sortedKeys: Object.keys(this.rows)//this.isRowArray &&
         }
     }
 
