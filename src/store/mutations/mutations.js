@@ -9,10 +9,10 @@ export const mutations = {
     },
 
     [TOGGLE_REQUEST_PENDING](state) {
-        state.isRquestPending = !state.isRquestPending;
+        state.isRequestPending = !state.isRequestPending;
     },
 
     [SET_REQUEST_PENDING](state, requestStatus) {
-        state.isRquestPending = requestStatus;
+        state.isRequestPending = requestStatus;
     }
 }

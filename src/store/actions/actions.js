@@ -19,9 +19,13 @@ const database = firebase.database();
 export const actions = {
 
     [FETCH_PAYMENTS](context) {
-        database.ref('/payments').once('value').then(snapshot => {
-            context.commit(SET_PAYMENTS, snapshot.val());
+        return new Promise(resolve => {
+            database.ref('/payments').once('value').then(snapshot => {
+                context.commit(SET_PAYMENTS, snapshot.val());
+                resolve();
+            }); 
         });
+
     },
 
     [UPDATE_PAYMENT](context, payload){

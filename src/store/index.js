@@ -6,7 +6,7 @@ import { actions } from './actions/actions';
 Vue.use(Vuex)
 
 const state = {
-    isRquestPending: false,
+    isRequestPending: true,
     payments: []
 };
 
