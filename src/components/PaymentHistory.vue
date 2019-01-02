@@ -65,7 +65,13 @@ export default {
 
     methods: {
         editedItem(payload){
-            this.$store.dispatch(UPDATE_PAYMENT, payload);
+            this.$store.commit(SET_REQUEST_PENDING, true);
+            this.$store.dispatch(UPDATE_PAYMENT, payload).then(
+                () => {
+                    this.$store.commit(TOGGLE_REQUEST_PENDING);
+                }).catch(error => {
+                    console.log(error);
+                });
         }
     },
 
