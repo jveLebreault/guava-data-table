@@ -1,0 +1,21 @@
+{
+    "me": {
+        "name": "Jose Elias",
+        "lastname": "Vargas Lebreault",
+        "bornIn":"Dominican Republic",
+        "age":"1 < x <= 100",
+        "nationality": "Dominican",
+        "dob": 702705600000,
+        "email": "joseevargasl@gmail.com",
+        "childs": {
+            "sons": 0,
+            "daughters": 1
+        },
+        "hobbies": [
+            "cooking",
+            "coding",
+            "gaming",
+            "reading"
+        ]
+    }
+}
