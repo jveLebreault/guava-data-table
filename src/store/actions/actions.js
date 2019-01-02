@@ -29,6 +29,18 @@ export const actions = {
     },
 
     [UPDATE_PAYMENT](context, payload){
-        console.log(payload);
+        return new Promise((resolve, reject) => {
+            const updates = {
+                ['/payments/'+payload.key]: payload.item
+            };
+
+            database.ref().update(updates, error => {
+                if(error) {
+                    reject(error);
+                } else {
+                    resolve()
+                }
+            });
+        });        
     }
 }
