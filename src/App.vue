@@ -17,7 +17,7 @@
                 <div class="navbar-start">
                 <a href="#" class="navbar-item">Home</a>
                 
-                <a href="#" class="navbar-item">Test repo</a>
+                <a href="https://github.com/jveLebreault/guava-data-table" class="navbar-item">Github repo</a>
                 </div>
             </div>
         </nav>
