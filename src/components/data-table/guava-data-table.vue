@@ -8,7 +8,7 @@
             </tr>
         </thead>
         <tbody>
-            <template v-if="Array.isArray(rows)">
+            <template v-if="isRowArray">
                 <tr v-for="(item, key) in rows" :key="key">
                     <template v-for="column in columns">
                         <data-cell :item="item" :column="column" :key="column.field" @save-edit="saveEdit($event, item, key)"/>
@@ -49,18 +49,11 @@ export default {
         }
     },
 
-    // mounted() {
-    //     // this.isRowArray = Array.isArray(this.rows);
-    //     this.sortedKeys = Object.keys(this.rows);
-    // },
-
     computed: {
-        // isRowArray() {
-        //     return Array.isArray(this.rows);
-        // }
-        sortedKeys() {
-            return Object.keys(this.rows);
-        }
+        isRowArray() {
+            this.sortedKeys = Object.keys(this.rows);
+            return Array.isArray(this.rows);
+        },
     },
 
     methods: {
@@ -129,7 +122,7 @@ export default {
     data() {
         return {
             currentlySortedColumn: {},
-            // sortedKeys: Object.keys(this.rows)//this.isRowArray &&
+            sortedKeys: Object.keys(this.rows)
         }
     }
 
