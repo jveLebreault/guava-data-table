@@ -4,7 +4,7 @@ import DataTable from "../src/components/data-table/guava-data-table.vue";
 import ColumnHeader from "../src/components/data-table/header-component/column-header.vue";
 import DataCell from "../src/components/data-table/data-cell-component/data-cell.vue";
 
-const column = [
+const tableColumns = [
   {
     header: 'Id',
     field: 'id'
@@ -21,7 +21,7 @@ const column = [
   }
 ];
 
-const rows = [
+const tableRows = [
   {
     id: 1,
     name: 'item1',
@@ -59,43 +59,74 @@ const objectData = {
     }
 };
 
-describe('guava-data-table', () => {
-    const wrapper = mount(DataTable, {
+const mountComponent = (rows = tableRows, columns = tableColumns) => {
+    return mount(DataTable, {
         propsData: {
-          columns: column,
-          rows: rows
+            rows,
+            columns
         }
-      });
+    });
+};
+
+describe('guava-data-table', () => {
 
     test('is a Vue instance', () => {
-      expect(wrapper.isVueInstance()).toBeTruthy();
+        const wrapper = mountComponent();
+
+        expect(wrapper.isVueInstance()).toBeTruthy();
     });
 
     it('Renders sortable icon in header', () => {
+        const wrapper = mountComponent();
+
         const headers = wrapper.findAll(ColumnHeader).filter(header => header.vm.column.isSortable);
         expect(headers.at(0).contains('.typcn-arrow-unsorted')).toBe(true);
     });
 
-    it('Render rows are not sorted', () => {
+    it('Rendered rows are not sorted', () => {
+        const wrapper = mountComponent();
+
         const rows = wrapper.findAll('tbody>tr>td:last-child');
         expect(rows.at(0).text()).toBe('20');
     });
 
-    it('Sort rows after clicking sortable header', () => {
+    it('Sort rows in descending order after clicking sortable header', () => {
+        const wrapper = mountComponent();
+
         const headers = wrapper.findAll(ColumnHeader).filter(header => header.vm.column.isSortable);
-        const rows = wrapper.findAll('tbody>tr>td:last-child');
-
-        console.log(wrapper.vm.rows[0]);
-
         headers.at(0).find('a.table-header').trigger('click');
-
-        console.log(wrapper.vm.rows[0]);
-
-        expect(rows.at(0).text()).toBe('15');
+        expect(wrapper.vm.rows[0].amount).toBeLessThan(wrapper.vm.rows[1].amount);
     });
 
+    // it('Sorted row has correct icon class', () => {
+    //     const headers = wrapper.findAll(ColumnHeader).filter(header => header.vm.column.isSortable);
+    //     headers.at(0).setData({isSorted: true, sortOrder: 'desc'});
+    //     console.log(headers.at(0).vm.getSortedIconClass);
+    //     expect(headers.at(0).contains('.typcn-arrow-sorted-down')).toBe(true);
+    // });
+
     it('Renders edit button on editable fields', () => {
+        const wrapper = mountComponent();
+
         const editableCell = wrapper.findAll(DataCell).filter(dataCell => dataCell.vm.column.isEditable);
         expect(editableCell.at(0).find('button').text()).toBe('Edit');
+    });
+
+    it('Changes text on cell button after click', () => {
+        const wrapper = mountComponent();
+
+        const editableCell = wrapper.findAll(DataCell).filter(dataCell => dataCell.vm.column.isEditable);
+        editableCell.at(0).find('button').trigger('click');
+        console.log(editableCell.at(0).html());
+        console.log('TEXTAREA',editableCell.at(0).find('textarea').text());
+        expect(editableCell.at(0).find('button').text()).toBe('Save');
+    });
+
+    it('Renders textarea after clicking edit button in datacell', () => {
+        const wrapper = mountComponent();
+
+        const editableCell = wrapper.findAll(DataCell).filter(dataCell => dataCell.vm.column.isEditable);
+        editableCell.at(0).find('button').trigger('click');
+        expect(editableCell.at(0).contains('textarea')).toBe(true);
     });
   });
